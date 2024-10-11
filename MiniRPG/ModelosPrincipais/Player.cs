@@ -6,42 +6,32 @@ namespace MiniRPG.ModelosPrincipais;
 
 internal class Player : ILevelUp
 {
-    public Player(string name, int lvl = 1, int xp = 0, int gold = 0)
+    public Player(string nome, int lvl = 1, int xp = 0, int gold = 0)
     {
-        Name = name;
+        Nome = nome;
         Lvl = lvl;
         Xp = xp;
         Gold = gold;
+        ContadorDeBatalhas = 0;
     }
 
     //propriedade para declarar login e senha do jogador
-    //criar um laço de rep para exibir a vida em barras, tipo 50 de vida ("60" -----....)[FEITO]
-    //lista de itens (tipo um invetário)
-    //criar uma propriedade de moedas para poder comprar itens, evoluir o player...
-    private List<string> itens = new();
-    public int ContadorDeBatalhas { get; set; }
+    //criar uma propriedade de moedas para poder comprar Itens, evoluir o player...
+    public List<string> Itens { get; set; } = new List<string>();
+    public int Id { get; set; }
+    public int ContadorDeBatalhas { get; set; } = 0;
     public int Gold { get; set; }
     public int Xp  { get; set; }
 //criar uma própriedade de string chamada titulo para colocar exibir um título assim que o jogador alcançar determinado objetivo(ex: voce completou 10 batlhas, campeão do JXJ)...
-    public  string Name { get; set; }
-    public int Lvl { get; set; }
+    public  string Nome { get; set; }
+    public int Lvl { get; set; } = 1;
     public int Dmg { get; set; }
     public int Def { get; set; }
     public int Health { get; set; }
 
-    private List<string> ClasseDispo = new List<string> { "Mago" , "Guerreiro", "Arqueiro", "Curador" };
-    public string Classe
-    {
-        get
-        {
-            return "";
-        }
-        set
-        {
-
-        }
-    }
-    public string Status => $"Nome jogador: {Name}\nNível atual: {Lvl}\nDano: {Dmg}\nDefesa:{Def}\nVida: {Health}\nOuro: {Gold}\nItens: {string.Join(",", itens)}\nPartidas jogadas: {ContadorDeBatalhas}";
+    public string? Classe { get; set; }
+   
+    public string Status => $"\nNome jogador: {Nome}\nNível atual: {Lvl}\nDano: {Dmg}\nDefesa:{Def}\nVida: {Health}\nOuro: {Gold}\nItens: {string.Join(",", Itens)}\nPartidas jogadas: {ContadorDeBatalhas}";
     public string Atributos => $"Dano: {Dmg}\nDefesa:{Def}\nVida: {Health}"; 
     public string XpAtual => $"Xp total = {Xp}";
 
@@ -95,10 +85,10 @@ internal class Player : ILevelUp
         switch (sorteado)
         {
            case 1:
-                if (!itens.Contains("Espada"))
+                if (!Itens.Contains("Espada"))
                 {
                     Console.WriteLine("Item recebido: espada!");
-                    itens.Add("Espada");
+                    Itens.Add("Espada");
                     Dmg += 20;
 
                 }
@@ -111,10 +101,10 @@ internal class Player : ILevelUp
                 break;
 
             case 2:
-                if (!itens.Contains("Armadura"))
+                if (!Itens.Contains("Armadura"))
                 {
                     Console.WriteLine("Item recebido: armadura!");
-                    itens.Add("Armadura");
+                    Itens.Add("Armadura");
                     Def += 3;
 
                 }
@@ -126,10 +116,10 @@ internal class Player : ILevelUp
                 }
                 break;
             case 3:
-                if (!itens.Contains("Colar Mágico"))
+                if (!Itens.Contains("Colar Mágico"))
                 {
                     Console.WriteLine("Item Recebido: colar mágico!");
-                    itens.Add("Colar Mágico");
+                    Itens.Add("Colar Mágico");
                     Health += 10;
 
                 }

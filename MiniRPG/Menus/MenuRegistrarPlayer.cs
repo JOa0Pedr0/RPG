@@ -1,47 +1,48 @@
 ﻿
+using MiniRPG.Bancos;
 using MiniRPG.ModelosPrincipais;
 
 namespace MiniRPG.Menus;
 
 internal class MenuRegistrarPlayer : Menu
 {
-    public override void Menuu(Dictionary<string, Player> jogadorRegistrado)
-        //transformar em um dicionario 
+    public override void Menuu(DAL<Player> playerDAL)
+        
     {
-        base.Menuu(jogadorRegistrado);
+        base.Menuu(playerDAL);
         ExibicaoTexto("Registro de jogador!");
         Thread.Sleep(1400);
-        base.Menuu(jogadorRegistrado);
+        base.Menuu(playerDAL);
         Console.WriteLine("Insira o nome do seu personagem:");
         string namePlayer = Console.ReadLine()!;
-        Player player = new (namePlayer);
-        if (jogadorRegistrado.ContainsKey(namePlayer))
+        var verificarPlayer = playerDAL.RecuperarPor(p => p.Nome.Equals(namePlayer));
+        if (verificarPlayer is not null)
         {
             Console.WriteLine("Esse nome já foi escolhido, por favor informe outro:");
             Console.ReadKey();
         }
         else
         {
-            jogadorRegistrado.Add(namePlayer, player);
-            Console.WriteLine("Aperte qualquer tecla");
+            Player newPlayer = new Player(namePlayer);
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
-            base.Menuu(jogadorRegistrado);
+            base.Menuu(playerDAL);
             Console.WriteLine($"Bem-Vindo ao MiniRPG {namePlayer}!");
             Thread.Sleep(1500);
-            base.Menuu(jogadorRegistrado);
+            base.Menuu(playerDAL);
             Console.WriteLine("Agora escolha a sua classe:\n");
-            player.ExibirClasses();
+            newPlayer.ExibirClasses();
             string classeEscolhida = Console.ReadLine()!;
-            base.Menuu(jogadorRegistrado);
-            player.SelecaoDeClasse(classeEscolhida);
+            base.Menuu(playerDAL);
+            newPlayer.SelecaoDeClasse(classeEscolhida);
             Console.WriteLine($"Muito bem! Você escolheu a classe: {classeEscolhida}!\n");
-            Console.WriteLine($"Seus atributos iniciais são: {player.Atributos}\n");
-            Console.WriteLine("Aperte qualquer tecla");
+            Console.WriteLine($"Seus atributos iniciais são:\n {newPlayer.Atributos}");
+            playerDAL.Adicionar(newPlayer);
+            Console.WriteLine("Aperte qualquer tecla para continuar");
             Console.ReadKey();
-            base.Menuu(jogadorRegistrado);
-            Console.WriteLine("Você vai evoluir durante as batalhas que enfrentará durante sua jornada!\n Boa sorte campeão.");
-            Console.WriteLine("\nAperte qualquer tecla");
-            Console.ReadKey();
+            base.Menuu(playerDAL);
+            Console.WriteLine("Você vai evoluir durante as batalhas durante sua jornada! Boa sorte campeão.");
+            CleanScreem();
         }
         
 
