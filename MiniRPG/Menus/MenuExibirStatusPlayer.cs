@@ -1,27 +1,28 @@
 ﻿
+using MiniRPG.Bancos;
 using MiniRPG.ModelosPrincipais;
 
 namespace MiniRPG.Menus;
 
 internal class MenuExibirStatusPlayer : Menu
 {
-    public override void Menuu(Dictionary<string, Player> jogadorRegistrado)
+    public override void Menuu(DAL<Player> playerDAL)
     {
-        base.Menuu(jogadorRegistrado);
+        base.Menuu(playerDAL);
         ExibicaoTexto("Status do jogador");
         Console.WriteLine();
         Thread.Sleep(1500);
-        base.Menuu(jogadorRegistrado);
+        base.Menuu(playerDAL);
 
         Console.WriteLine("Informe o nome do jogador:");
-        string nome = Console.ReadLine()!;
+        string namePlayer = Console.ReadLine()!;
         Thread.Sleep(1500);
-        base.Menuu(jogadorRegistrado);
-        if (jogadorRegistrado.ContainsKey(nome))
+        base.Menuu(playerDAL);
+        var jogadorBuscado = playerDAL.RecuperarPor(p => p.Nome.Equals(namePlayer));
+        if (jogadorBuscado is not null)
         {
-            Player player = jogadorRegistrado[nome];
-            Console.WriteLine(player.Status);
-            Console.WriteLine(player.XpAtual);
+            Console.WriteLine(jogadorBuscado.Status);
+            Console.WriteLine(jogadorBuscado.XpAtual);
 
             Console.WriteLine("\nDigite qualquer tecla:");
             Console.ReadKey();
@@ -29,7 +30,7 @@ internal class MenuExibirStatusPlayer : Menu
         }
         else
         {
-            Console.WriteLine($"Jogador {nome} não existe!");
+            Console.WriteLine($"Jogador {namePlayer} não existe!");
             Console.WriteLine("Digite qualquer tecla:");
             Console.ReadKey();
         }

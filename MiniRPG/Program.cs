@@ -1,43 +1,48 @@
-﻿using MiniRPG.Menus;
+﻿using MiniRPG.Bancos;
+using MiniRPG.Filtros;
+using MiniRPG.Menus;
 using MiniRPG.ModelosPrincipais;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
 
-Dictionary<string, Player> jogadorRegistrado = new();
-Enemy enemy = new();
-//possivelmente eu terei que jogar essas informações do meu player em um dicionario para que eu possa 
-//acessa-lo em outros métodos 
-//tentar fazer uma classe itens com venda de itens para aumentar os atributos do meu player
-//aumentar a dificuldade do inimigo 
+MiniRPGContext context = new MiniRPGContext();
+DAL<Player> playerDAL = new DAL<Player>(context);
+
+
 void ExibirMenu()
 {
     Console.Clear();
     Console.WriteLine("[1] Para registrar player");
     Console.WriteLine("[2] Para batalhar");
     Console.WriteLine("[3] Para exibir status atual do jogador");
-    Console.WriteLine("[-1]Para sair do jogo\n");
-
+    Console.WriteLine("[-1]Para sair do jogo");
+    Console.WriteLine("[4] Para fazer buscas de jogadores:\n");
     Console.WriteLine("Digite o número relacionado a opção desejada:");
     int opcaoDigitada = int.Parse(Console.ReadLine()!);
 
     switch (opcaoDigitada)
     {
+
         case 1:
             Menu menu1 = new MenuRegistrarPlayer();
-            menu1.Menuu(jogadorRegistrado);
+            menu1.Menuu(playerDAL);
             ExibirMenu();
             break;
         case 2:
             Menu menu2 = new MenuBatalhar();
-            menu2.Menuu(jogadorRegistrado);
+            menu2.Menuu(playerDAL);
             ExibirMenu();
             break;
 
         case 3:
             Menu menu3 = new MenuExibirStatusPlayer();
-            menu3.Menuu(jogadorRegistrado);
+            menu3.Menuu(playerDAL);
             ExibirMenu();
             break;
+
+        case 4:
+            LinqBuscas.BuscarJogadorPorLvl(playerDAL);
+            ExibirMenu();
+            break;
+
         case -1:
             Menu menuExit = new MenuExit();
             Console.Clear();
@@ -46,7 +51,7 @@ void ExibirMenu()
             string resp = Console.ReadLine()!;
             if (resp == "S")
             {
-                menuExit.Menuu(jogadorRegistrado);
+                menuExit.Menuu(playerDAL);
             }
             else if (resp == "N")
             {
@@ -61,19 +66,8 @@ void ExibirMenu()
             break;
     }
 }
-//ExibirMenu();
-Player p1 = new Player("jp");
-Player p2 = new Player("kllr");
-p1.SelecaoDeClasse("Mago");
-p2.SelecaoDeClasse("Guerreiro");
+ExibirMenu();
 
-Console.WriteLine(p1.Status);
-Console.WriteLine("---------");
-Console.WriteLine(p2.Status);
-
-Batalhas b1 = new Batalhas();
-
-b1.Pvp(p1, p2);
 
 
 
