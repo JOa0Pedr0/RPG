@@ -11,8 +11,8 @@ using MiniRPG.Bancos;
 namespace MiniRPG.Migrations
 {
     [DbContext(typeof(MiniRPGContext))]
-    [Migration("20240917184157_TabelaPopular")]
-    partial class TabelaPopular
+    [Migration("20250409150453_RPG")]
+    partial class RPG
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,10 @@ namespace MiniRPG.Migrations
 
                     b.Property<int>("Health")
                         .HasColumnType("int");
+
+                    b.Property<string>("Itens")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Lvl")
                         .HasColumnType("int");

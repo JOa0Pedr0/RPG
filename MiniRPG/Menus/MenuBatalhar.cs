@@ -12,8 +12,7 @@ internal class MenuBatalhar : Menu
     public override void Menuu(DAL<Player> playerDAL)
     {
         Console.Clear();
-        //Por enquanto eu vou irei solicitar o nome do jogador para ele poder acessar as informações do registro 
-        //Futuramente será o login do jogador 
+        
         Console.WriteLine("Informe o nome do jogador:");
         string namePlayer = Console.ReadLine()!;
         base.Menuu(playerDAL);
@@ -35,10 +34,19 @@ internal class MenuBatalhar : Menu
             }
             else if( resp == 2) 
             {
-                ExibicaoTexto("BOSS BATTLE");
+                if(playerInBattle.Lvl < 10)
+                {
+                    ExibicaoTexto("NÃO FOI POSSÍVEL CARREGAR ESSE MODO");
+                }
+                else
+                {
+                    ExibicaoTexto("BOSS BATTLE");
+
+                }
                 Batalhas battle = new();
                 battle.BossBattlle(playerInBattle);
                 playerDAL.Atualizar(playerInBattle);
+                Console.ReadKey();
                 CleanScreem();
             }else if (resp == 3)
             {

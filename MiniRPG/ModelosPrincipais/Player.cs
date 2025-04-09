@@ -14,15 +14,11 @@ internal class Player : ILevelUp
         Gold = gold;
         ContadorDeBatalhas = 0;
     }
-
-    //propriedade para declarar login e senha do jogador
-    //criar uma propriedade de moedas para poder comprar Itens, evoluir o player...
     public List<string> Itens { get; set; } = new List<string>();
     public int Id { get; set; }
     public int ContadorDeBatalhas { get; set; } = 0;
     public int Gold { get; set; }
     public int Xp  { get; set; }
-//criar uma própriedade de string chamada titulo para colocar exibir um título assim que o jogador alcançar determinado objetivo(ex: voce completou 10 batlhas, campeão do JXJ)...
     public  string Nome { get; set; }
     public int Lvl { get; set; } = 1;
     public int Dmg { get; set; }
