@@ -10,19 +10,25 @@ internal  class Batalhas : ILevelUp
         int danoMinimo = 1;
         Console.WriteLine($"{p1.Nome} está entrando em combate!");
         p1.ContadorDeBatalhas++;
-        if(p1.Lvl > 5 && p1.Lvl <= 9)
+        if (p1.Lvl == 1)
+        {
+            enemy.Dmg *= 1;
+        }
+        else if (p1.Lvl > 5 && p1.Lvl <= 9)
         {
             enemy.Dmg *= 2;
             enemy.Health *= 2;
             enemy.Def *= 2;
             danoMinimo = enemy.Dmg / 2;
-        }else if (p1.Lvl < 10 && p1.Lvl <= 14)
+        }
+        else if (p1.Lvl < 10 && p1.Lvl <= 14)
         {
             enemy.Dmg *= 3;
             enemy.Health *= 3;
             enemy.Def *= 3;
             danoMinimo = enemy.Dmg / 3;
-        }else if( p1.Lvl > 15)
+        }
+        else if (p1.Lvl > 15)
         {
             enemy.Dmg *= 4;
             enemy.Health *= 4;
@@ -41,9 +47,9 @@ internal  class Batalhas : ILevelUp
         Console.WriteLine(enemy.Dmg);
 
 
-        while (enemy.Health >0 || p1.Health >0)
+        while (enemy.Health > 0 || p1.Health > 0)
         {
-            int dmgRoundPlayer = randDmgPlayer.Next(1, p1.Dmg);
+            int dmgRoundPlayer = randDmgPlayer.Next(p1.Dmg/2, p1.Dmg);
             Thread.Sleep(1400);
             Console.WriteLine($"Player Turn: {dmgRoundPlayer}");
             int dmgEnemyRound = randDmgEnemy.Next(danoMinimo, enemy.Dmg);
@@ -54,6 +60,7 @@ internal  class Batalhas : ILevelUp
                 Console.WriteLine(" Enemy: Miss!\n");
 
                 p1.Health -= dmgEnemyRound;
+                Console.WriteLine($"Vida turno jogador {p1.Health}");
             }
             else
             {
@@ -62,9 +69,8 @@ internal  class Batalhas : ILevelUp
 
                 p1.Health -= dmgEnemyRound;
                 enemy.Health -= dmgRoundPlayer ;
-
+                Console.WriteLine($"Vida turno jogador {p1.Health}");
             }
-            Console.WriteLine($"Vida turno jogador {p1.Health}");
             totalDamage += dmgRoundPlayer;
             totalDamageEnemy += dmgEnemyRound;
             if(enemy.Health < 0)
@@ -90,12 +96,6 @@ internal  class Batalhas : ILevelUp
 
            
             p1.ReceberItem();
-            //no final de uma partida o jogador irá receber algum item, podendo ser ouro ou arma[OK] :
-            //criar uma lista na classe player e adicionar assim que o jogador ganhar[OK]
-            //usar o metodo random e atribuir um numero para ser item (ex 2) e outro para ouro(ex 1) fazendo com que sendo um dos dois ele irá receber o refernte[OK]
-            //criar uma funcao na classe Player que  exiba meu inventário [ainda n feito]
-            //quando criar ganhar um item tenho que add o player e o item na lista? ou só o item na minha lista??[não, pois só foi preciso criar uma lista na classe Player e adicionar os Itens na lista]
-            //o ouro vai ser um atributo da classe Player sendo usado numa futura classe de vendas de Itens ou poder
             Console.WriteLine($"Dano causado na partida: [{totalDamage}]");
             Console.WriteLine($"Dano recebido na partida: [{totalDamageEnemy}]");
             p1.Xp += 30;
@@ -114,7 +114,6 @@ internal  class Batalhas : ILevelUp
         }
 
 
-        //caso o player vença, ele irá receber uma quantia de xp [feito]
     }
     public void BossBattlle(Player p1)
     {
@@ -132,12 +131,15 @@ internal  class Batalhas : ILevelUp
             Console.ReadKey();
             Console.Clear();
             Enemy boss = new();
-            boss.Dmg += 2*p1.Lvl  ; 
+            boss.Dmg *= 2 * p1.Lvl; 
             boss.Health *= 2;
             int resBossLife = boss.Health;
+            Thread.Sleep(1400);
+            Console.Clear();
             Console.WriteLine("Iniciando combate...");
+            Console.WriteLine("->>>>>"+boss.Dmg);
 
-            while (boss.Health > 0 &&  p1.Health > 0)
+            while (boss.Health > 0 ||  p1.Health > 0)
             {
                 int dmgPlayerTurn = randDmgPlayer.Next(p1.Dmg/2, p1.Dmg);
                 int dmgEnemyTurn = randDmgEnemy.Next(boss.Dmg / 2, boss.Dmg);
@@ -162,23 +164,17 @@ internal  class Batalhas : ILevelUp
 
                 danoTotalInimigo += dmgEnemyTurn;
                 danoTotalPlayer += dmgPlayerTurn;
-                
-            }
-            for (int life = 0; life < p1.Health; life++)
-            {
-                Console.Write("|");
             }
             if(boss.Health <= 0)
             {
                 p1.Health = resPlayerLife;
                 boss.Health = resBossLife;
-                Console.WriteLine("Vitória do jogador!");
+                Console.WriteLine("VITÓRIA DO JOGADOR!");
                 p1.Xp += 80;
                 if (p1.Xp >= 100)
                 {
                     Upar(p1, boss);
                 }
-                //receber um item novo para aumentar os atributos do jodor!
 
                 Console.WriteLine($"Dano causado: {danoTotalPlayer}");
                 Console.WriteLine($"Dano recebido: {danoTotalInimigo}");
@@ -190,19 +186,15 @@ internal  class Batalhas : ILevelUp
                 p1.Health = resPlayerLife;
                 boss.Health = resBossLife;
             }
-            
         }
         else
         {
             Console.WriteLine("Você ainda não está apto para acessar esse modo!\n");
             Console.WriteLine("Volte quando estiver mais forte");
-            Thread.Sleep(1600);
+            Console.ReadKey();
             Console.Clear();
-
         }
-
     }
-
     public void Pvp(Player p1, Player p2)
     {
       

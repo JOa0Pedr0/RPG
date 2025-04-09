@@ -44,7 +44,7 @@ internal static class LinqBuscas
             case 2:
                
                 Console.WriteLine("Digite a classe de jogador que deseja filtrar");
-                string classe = Console.ReadLine()!;
+                string classe = Console.ReadLine().ToLower()!;
                 if(classe != "Mago".ToLower() && classe != "Guerreiro".ToLower() && classe != "Arqueiro".ToLower() && classe != "Curador".ToLower())
                 {
                     Console.WriteLine($"classe {classe} não existe!");

@@ -5,7 +5,7 @@
 namespace MiniRPG.Migrations
 {
     /// <inheritdoc />
-    public partial class BancoMiniRpg : Migration
+    public partial class RPG : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,6 +16,7 @@ namespace MiniRPG.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Itens = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContadorDeBatalhas = table.Column<int>(type: "int", nullable: false),
                     Gold = table.Column<int>(type: "int", nullable: false),
                     Xp = table.Column<int>(type: "int", nullable: false),
